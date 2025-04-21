@@ -2,6 +2,7 @@
 buff:           .byte '________________________________'
 letter:         .word 0x00          ; Variable to store the current letter
 i:              .word 0
+max_val:        .word 0x20
 diff:           .word 0x20          ; Difference between uppercase and lowercase
 const_1:        .word 0x01          ; Constant 1
 small_a:        .word 0x61          ; ASCII value for 'a'
@@ -20,8 +21,9 @@ _start:
     store       i
     
 read_loop:
+    load        max_val
+    beqz        error
     load_ind    input_addr
-    beqz        read_end
     
     and         mask
     sub         new_line
@@ -45,6 +47,9 @@ write_char:
     load        i
     add         const_1
     store       i
+    load        max_val
+    sub         const_1
+    store       max_val
     
     jmp         read_loop
     
